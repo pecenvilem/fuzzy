@@ -1,0 +1,29 @@
+[
+    {
+        "Cold":
+        [
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "upper": -10
+                        },
+                        "value": 1
+                    }
+            },
+            {
+                "LinearCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": -10,
+                            "upper": 20
+                        },
+                        "slope": -0.0333,
+                        "intercept": 0.6666
+                    }
+            }
+        ]
+    }
+]
