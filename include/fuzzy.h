@@ -76,33 +76,5 @@ class FuzzySet
         double membership(double value);
 };
 
-// void from_json(const json &j, std::vector<Curve*> curves);
-
-// typedef Curve *(*CurveFactory)(const json &j);
-// typedef const std::map<std::string, CurveFactory> CurveTypeResolverMap;
-
-// template<typename T> Curve *createInstance(const json &j)
-// {
-//     return j.get<T>();
-// }
-
-// typedef std::map<std::string, Curve*(*)()> CurveTypeResolverMap;
-
-// CurveTypeResolverMap map;
-// map["LinearCurve"] = &createInstance<LinearCurve>;
-
-
-
-template<typename T>
-Curve * createInstance(json &j)
-{
-    return new T;
-}
-
-typedef Curve*(*CurveFactory)(json &j);
-
-typedef std::map<std::string, CurveFactory> map_type;
-
-
 
 #endif  //!__FUZZY__H__
