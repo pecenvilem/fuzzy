@@ -3,6 +3,8 @@
 
 #include "json.hpp"
 #include <map>
+#include <vector>
+#include <string>
 
 using json = nlohmann::json;
 
@@ -41,7 +43,6 @@ class ConstantCurve: public Curve
         double membership(double input) override;
 };
 
-
 class LinearCurve: public Curve
 {
         friend void to_json(json &j, const LinearCurve &c);
@@ -58,6 +59,25 @@ class LinearCurve: public Curve
         double membership(double input) override;
 };
 
+
+class FuzzySet
+{
+        friend void to_json(json &j, const FuzzySet &set);
+        friend void from_json(const json &j, FuzzySet &set);
+    private:
+        std::string _name = "";
+        std::vector<Curve*> _curves;
+    public:
+        FuzzySet(void) {};
+        FuzzySet(const std::string name, const std::vector<Curve*> curves);
+        FuzzySet(const std::string name, const json &j_curves);
+        FuzzySet(const json &j);
+        ~FuzzySet(void);
+        double membership(double value);
+};
+
+// void from_json(const json &j, std::vector<Curve*> curves);
+
 // typedef Curve *(*CurveFactory)(const json &j);
 // typedef const std::map<std::string, CurveFactory> CurveTypeResolverMap;
 
@@ -73,9 +93,13 @@ class LinearCurve: public Curve
 
 
 
-template<typename T> Curve * createInstance() { return new T; }
+template<typename T>
+Curve * createInstance(json &j)
+{
+    return new T;
+}
 
-typedef Curve*(*CurveFactory)();
+typedef Curve*(*CurveFactory)(json &j);
 
 typedef std::map<std::string, CurveFactory> map_type;
 
