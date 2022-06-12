@@ -108,23 +108,13 @@ FuzzySet::FuzzySet(const std::string name, const std::vector<Curve*> curves)
 FuzzySet::FuzzySet(const json &j)
 {
     _name = j.begin().key();
-    for (auto element: j.begin().value())
-    {
-        if (element.begin().key() == "ConstantCurve")
-        {
-            _curves.push_back(new ConstantCurve(element));
-        }
-        else if (element.begin().key() == "LinearCurve")
-        {
-            _curves.push_back(new LinearCurve(element));
-        }
-        
-    }
+    _get_curves_from_json(j.begin().value());
 }
 
 FuzzySet::FuzzySet(const std::string name, const json &j_curves)
 {
     _name = name;
+    _get_curves_from_json(j_curves);
 }
 
 FuzzySet::~FuzzySet(void)
@@ -137,5 +127,20 @@ FuzzySet::~FuzzySet(void)
 double FuzzySet::membership(double value)
 {
     return _curves[1]->membership(value);
+}
+
+void FuzzySet::_get_curves_from_json(const json &j)
+{
+    for (auto element: j)
+    {
+        if (element.begin().key() == "ConstantCurve")
+        {
+            _curves.push_back(new ConstantCurve(element));
+        }
+        else if (element.begin().key() == "LinearCurve")
+        {
+            _curves.push_back(new LinearCurve(element));
+        }
+    }
 }
 // PLACEHOLDER!

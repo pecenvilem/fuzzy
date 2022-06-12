@@ -74,6 +74,8 @@ class FuzzySet
         FuzzySet(const json &j);
         ~FuzzySet(void);
         double membership(double value);
+    private:
+        void _get_curves_from_json(const json &j);
 };
 
 
