@@ -6,14 +6,12 @@
 #include <math.h>
 #include <limits>
 
-using json = nlohmann::json;
+#define GET_DOUBLE_VALUE(JSON, KEY) ((JSON.begin().value().at(KEY).get<double>()))
 
-Curve::Curve(void) {_lower_bound = 0; _upper_bound = 0;}
+Curve::Curve(void): _lower_bound(0), _upper_bound(0) {}
 
-Curve::Curve(double lower_bound, double upper_bound)
-{
-    _lower_bound = lower_bound; _upper_bound = upper_bound;
-}
+Curve::Curve(double lower_bound, double upper_bound):
+_lower_bound(lower_bound), _upper_bound(upper_bound) {}
 
 Curve::Curve(const json &j)
 {
@@ -21,7 +19,7 @@ Curve::Curve(const json &j)
     {
         _lower_bound = j.begin().value().at("bounds").at("lower").get<double>();
     }
-    catch(const std::exception &e)
+    catch(const json::out_of_range &e)
     {
         _lower_bound = - std::numeric_limits<double>::infinity();
     }
@@ -29,7 +27,7 @@ Curve::Curve(const json &j)
     {
         _upper_bound = j.begin().value().at("bounds").at("upper").get<double>();
     }
-    catch(const std::exception &e)
+    catch(const json::out_of_range &e)
     {
         _upper_bound = + std::numeric_limits<double>::infinity();
     }
@@ -65,40 +63,103 @@ void Curve::set_upper_bound(double value)
     }
 }
 
-ConstantCurve::ConstantCurve(void): Curve() {_value = 0;}
+bool Curve::contains(double value)
+{
+    return _lower_bound <= value && value <= _upper_bound;
+}
+
+ConstantCurve::ConstantCurve(void): Curve(), _value(0) {}
 
 ConstantCurve::ConstantCurve(
     double lower_bound, double upper_bound,
     double value
-): Curve(lower_bound, upper_bound)
-{
-    _value = value;
-}
+): Curve(lower_bound, upper_bound), _value(value) {}
 
 ConstantCurve::ConstantCurve(const json &j): Curve(j)
 {
-    _value = j.begin().value().at("value").get<double>();
+    _value = GET_DOUBLE_VALUE(j, "value");
+    // _value = j.begin().value().at("value").get<double>();
 }
 
 double ConstantCurve::membership(double input) {return _value;}
 
-LinearCurve::LinearCurve(void): Curve() {_slope = 0; _intercept = 0;}
+LinearCurve::LinearCurve(void): Curve(), _slope(0), _intercept(0) {}
 
 LinearCurve::LinearCurve(
     double lower_bound, double upper_bound,
     double slope, double intercept
-): Curve(lower_bound, upper_bound)
-{
-    _slope = slope; _intercept = intercept;
-}
+): Curve(lower_bound, upper_bound), _slope(slope), _intercept(intercept) {}
 
 LinearCurve::LinearCurve(const json &j): Curve(j)
 {
-    _slope = j.begin().value().at("slope").get<double>();
-    _intercept = j.begin().value().at("intercept").get<double>();
+    _slope = GET_DOUBLE_VALUE(j, "slope");
+    _intercept = GET_DOUBLE_VALUE(j, "intercept");
+    // _slope = j.begin().value().at("slope").get<double>();
+    // _intercept = j.begin().value().at("intercept").get<double>();
 }
 
 double LinearCurve::membership(double input) {return _slope * input + _intercept;}
+
+QuadraticCurve::QuadraticCurve(void) :Curve(), _a(0), _b(0), _c(0) {}
+
+QuadraticCurve::QuadraticCurve(
+    double lower_bound, double upper_bound,
+    double a, double b, double c
+): Curve(lower_bound, upper_bound), _a(a), _b(b), _c(c) {}
+
+QuadraticCurve::QuadraticCurve(const json &j): Curve(j)
+{
+    _a = GET_DOUBLE_VALUE(j, "a");
+    _b = GET_DOUBLE_VALUE(j, "b");
+    _c = GET_DOUBLE_VALUE(j, "c");
+}
+
+double QuadraticCurve::membership(double input)
+{
+    return _a*input*input + _b*input + _c;
+}
+
+LogarithmicCurve::LogarithmicCurve(void):
+Curve(), _base(M_E), _x_offset(0), _y_offset(0) {}
+
+LogarithmicCurve::LogarithmicCurve(
+    double lower_bound, double upper_bound,
+    double base, double x_offset, double y_offset
+): Curve(lower_bound, upper_bound), _base(base),
+_x_offset(x_offset), _y_offset(y_offset) {}
+
+LogarithmicCurve::LogarithmicCurve(const json &j): Curve(j)
+{
+    _base = GET_DOUBLE_VALUE(j, "base");
+    _x_offset = GET_DOUBLE_VALUE(j, "x_offset");
+    _y_offset = GET_DOUBLE_VALUE(j, "y_offset");
+}
+
+double LogarithmicCurve::membership(double input)
+{
+    return log(input - _x_offset) / log(_base - _x_offset) + _y_offset;
+}
+
+ExponentialCurve::ExponentialCurve(void):
+Curve(), _base(M_E), _x_offset(0), _y_offset(0) {}
+
+ExponentialCurve::ExponentialCurve(
+    double lower_bound, double upper_bound,
+    double base, double x_offset, double y_offset
+): Curve(lower_bound, upper_bound), _base(base),
+_x_offset(x_offset), _y_offset(y_offset) {}
+
+ExponentialCurve::ExponentialCurve(const json &j): Curve(j)
+{
+    _base = GET_DOUBLE_VALUE(j, "base");
+    _x_offset = GET_DOUBLE_VALUE(j, "x_offset");
+    _y_offset = GET_DOUBLE_VALUE(j, "y_offset");
+}
+
+double ExponentialCurve::membership(double input)
+{
+    return _base * (input - _x_offset) * (input - _x_offset) + _y_offset;
+}
 
 FuzzySet::FuzzySet(const std::string name, const std::vector<Curve*> curves)
 {
@@ -122,11 +183,10 @@ FuzzySet::~FuzzySet(void)
     for (Curve *c : _curves) delete c;
 }
 
-
-// PLACEHOLDER!
 double FuzzySet::membership(double value)
 {
-    return _curves[1]->membership(value);
+    for (Curve *c: _curves) if(c->contains(value)) return c->membership(value);
+    return 0;
 }
 
 void FuzzySet::_get_curves_from_json(const json &j)
@@ -143,4 +203,3 @@ void FuzzySet::_get_curves_from_json(const json &j)
         }
     }
 }
-// PLACEHOLDER!

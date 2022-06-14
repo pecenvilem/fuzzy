@@ -23,6 +23,16 @@
                         "slope": -0.0333,
                         "intercept": 0.6666
                     }
+            },
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 20
+                        },
+                        "value": 0
+                    }
             }
         ]
     }
