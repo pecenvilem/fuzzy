@@ -3,6 +3,7 @@
 
 #include "json.hpp"
 #include <map>
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -13,10 +14,14 @@ class Curve
     /* Abstract base class representing one individual segment of
     membership funcion of Fuzzy Set */
 private:
-    double _lower_bound, _upper_bound;
+    double _lower_bound = 0, _upper_bound = 0;
+    bool _lower_inclusive = false, _upper_inclusive = false;
 public:
-    Curve(void);
-    Curve(double lower_bound, double upper_bound);
+    Curve(void) {};
+    Curve(
+        double lower_bound, double upper_bound,
+        bool lower_inclusive = true, bool upper_unclusive = true
+    );
     Curve(const json &j);
 
     double get_lower_bound(void) const;
@@ -25,6 +30,7 @@ public:
     void set_upper_bound(double value);
 
     bool contains(double value);
+    bool is_finite(void);
 
     virtual double membership(double input) = 0;
 };
@@ -37,7 +43,8 @@ class ConstantCurve: public Curve
     public:
         ConstantCurve(void);
         ConstantCurve(
-            double lower_bound, double upper_bound, double value
+            double lower_bound, double upper_bound, double value,
+            bool lower_inclusive = true, bool upper_unclusive = true
         );
         ConstantCurve(const json &j);
         double membership(double input) override;
@@ -52,7 +59,8 @@ class LinearCurve: public Curve
         LinearCurve(void);
         LinearCurve(
             double lower_bound, double upper_bound,
-            double slope, double intercept
+            double slope, double intercept,
+            bool lower_inclusive = true, bool upper_unclusive = true
         );
         LinearCurve(const json &j);
         double membership(double input) override;
@@ -69,7 +77,8 @@ class QuadraticCurve: public Curve
         QuadraticCurve(void);
         QuadraticCurve(
             double lower_bound, double upper_bound,
-            double a, double b, double c
+            double a, double b, double c,
+            bool lower_inclusive = true, bool upper_unclusive = true
         );
         QuadraticCurve(const json &j);
         double membership(double input) override;
@@ -85,7 +94,8 @@ class LogarithmicCurve: public Curve
         LogarithmicCurve(void);
         LogarithmicCurve(
             double lower_bound, double upper_bound,
-            double base, double x_offset, double y_offset
+            double base, double x_offset, double y_offset,
+            bool lower_inclusive = true, bool upper_unclusive = true
         );
         LogarithmicCurve(const json &j);
         double membership(double input) override;
@@ -101,7 +111,8 @@ class ExponentialCurve: public Curve
         ExponentialCurve(void);
         ExponentialCurve(
             double lower_bound, double upper_bound,
-            double base, double x_offset, double y_offset
+            double base, double x_offset, double y_offset,
+            bool lower_inclusive = true, bool upper_unclusive = true
         );
         ExponentialCurve(const json &j);
         double membership(double input) override;

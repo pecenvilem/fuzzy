@@ -16,10 +16,8 @@ int main(int argc, char **argv)
     infile.close();
 
     FuzzySet s(j_from_file[0]);
-    std::cout << s.membership(-100) << std::endl;
-    std::cout << s.membership(5) << std::endl;
-    std::cout << s.membership(20) << std::endl;
-    std::cout << s.membership(40) << std::endl;
+    s.generate_plot_data("Cold.csv");
+    system("CALL plot\\plot.bat Cold.csv");
     
     return 0;
 }
