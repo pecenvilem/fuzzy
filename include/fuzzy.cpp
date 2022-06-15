@@ -189,6 +189,52 @@ double FuzzySet::membership(double value)
     return 0;
 }
 
+void FuzzySet::generate_plot_data(
+    std::string filename, int samples,
+    double center_infinite, double lookahead_infinite
+)
+{
+    std::ofstream output_file(filename, std::ios::trunc);
+    if (!output_file.good())
+    {
+        std::string message = "File " + filename + " can't be oppened!";
+        throw std::invalid_argument(message);
+    }
+
+    double from, to;
+    
+    #define RENDER(x) ((output_file << x << ";" << c->membership(x) << std::endl))
+
+    for (Curve *c: _curves)
+    {
+        if (isinf(c->get_lower_bound()))
+        {
+            if (isinf(c->get_upper_bound()))
+            {
+                from = center_infinite - lookahead_infinite;
+                to = center_infinite + lookahead_infinite;
+            } else {
+                from = c->get_upper_bound() - lookahead_infinite;
+                to = c->get_upper_bound();
+            }
+        } else {
+            if (isinf(c->get_upper_bound()))
+            {
+                from = c->get_lower_bound();
+                to = c->get_lower_bound() + lookahead_infinite;
+            } else {
+                from = c->get_lower_bound();
+                to = c->get_upper_bound();
+            }
+        }
+        RENDER(from);
+        for (double i = from; i < to; i += (to - from) / samples) RENDER(i);
+        RENDER(to);
+    }
+
+    output_file.close();
+}
+
 void FuzzySet::_get_curves_from_json(const json &j)
 {
     for (auto element: j)
@@ -202,4 +248,41 @@ void FuzzySet::_get_curves_from_json(const json &j)
             _curves.push_back(new LinearCurve(element));
         }
     }
+}
+
+bool FuzzySet::_is_finite(void)
+{
+    for (Curve *c: _curves) if(!(c->is_finite())) return false;
+    return true;
+}
+
+double FuzzySet::_min_bound(void)
+{
+    if (_curves.size() == 0)
+        throw std::out_of_range("Trying to find limit of an empty set!");
+
+    double min = std::numeric_limits<double>::infinity();
+    for (Curve *c: _curves)
+    {
+        if (c->get_lower_bound() < min) min = c->get_lower_bound();
+    }
+    return min;
+}
+
+double FuzzySet::_max_bound(void)
+{
+    if (_curves.size() == 0)
+        throw std::out_of_range("Trying to find limit of an empty set!");
+    double max = std::numeric_limits<double>::infinity();
+    for (Curve *c: _curves)
+    {
+        if (c->get_lower_bound() > max) max = c->get_lower_bound();
+    }
+    return max;
+}
+
+double FuzzySet::_span(void)
+{
+    if (!(_is_finite())) return std::numeric_limits<double>::infinity();
+    return _max_bound() - _min_bound();
 }
