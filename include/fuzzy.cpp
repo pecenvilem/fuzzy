@@ -270,18 +270,33 @@ void FuzzySet::generate_plot_data(
     output_file.close();
 }
 
+template <typename T> Curve* create_curve(json &j) {return new T(j);}
+typedef Curve* (*CurveResolver)(json &j);
+
 void FuzzySet::_get_curves_from_json(const json &j)
 {
+    std::map<const std::string, CurveResolver> resolver_map = {
+        {"ConstantCurve", create_curve<ConstantCurve>},
+        {"LinearCurve", create_curve<LinearCurve>},
+        {"QuadraticCurve", create_curve<QuadraticCurve>},
+        {"ExponentialCurve", create_curve<ExponentialCurve>},
+        {"LogarithmicCurve", create_curve<LogarithmicCurve>},
+    };
     for (auto element: j)
     {
-        if (element.begin().key() == "ConstantCurve")
-        {
-            _curves.push_back(new ConstantCurve(element));
-        }
-        else if (element.begin().key() == "LinearCurve")
-        {
-            _curves.push_back(new LinearCurve(element));
-        }
+        std::string s = element.begin().key();
+        CurveResolver r = resolver_map.at(element.begin().key());
+        _curves.push_back(r(element));
+        // auto c = resolver_map["LinearCurve"](element);
+        // _curves.push_back(resolver_map[element.begin().key()](element));
+        // if (element.begin().key() == "ConstantCurve")
+        // {
+        //     _curves.push_back(new ConstantCurve(element));
+        // }
+        // else if (element.begin().key() == "LinearCurve")
+        // {
+        //     _curves.push_back(new LinearCurve(element));
+        // }
     }
 }
 
