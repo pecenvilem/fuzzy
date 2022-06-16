@@ -1,3 +1,6 @@
+# .csv files produced when generating plot data
+*.csv
+
 # Python virtual environment files
 */venv/*
 
