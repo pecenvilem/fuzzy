@@ -3,6 +3,24 @@
         "Cold":
         [
             {
+                "QuadraticCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": -10,
+                            "lower_inclusive": true,
+                            "upper": 10,
+                            "upper_inclusive": true
+                        },
+                        "a": 0.01, "b": 0, "c": 0
+                    }
+            }
+        ]
+    },
+    {
+        "Hot":
+        [
+            {
                 "ConstantCurve":
                     {
                         "bounds":
