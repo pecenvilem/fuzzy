@@ -13,6 +13,8 @@ int main(int argc, char **argv)
     infile.close();
 
     FuzzySet s(j_from_file[0]);
+    json j_out = s.get_json();
+    std::cout << j_out.dump(4) << std::endl;
     s.generate_plot_data("Cold.csv");
     system("CALL plot\\plot.bat Cold.csv");
     

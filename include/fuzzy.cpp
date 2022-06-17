@@ -81,6 +81,13 @@ void FuzzySet::generate_plot_data(
     output_file.close();
 }
 
+json FuzzySet::get_json(void)
+{
+    json j = json::array();
+    for (Curve* c: _curves) j.push_back(c->get_json());
+    return json{{_name, j}};
+}
+
 template <typename T> Curve* create_curve(json &j) {return new T(j);}
 typedef Curve* (*CurveResolver)(json &j);
 

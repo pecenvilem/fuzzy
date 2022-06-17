@@ -90,6 +90,23 @@ bool Curve::is_finite(void)
     return isfinite(_lower_bound) && isfinite(_upper_bound);
 }
 
+json Curve::get_json(void)
+{
+    json j;
+    if (isfinite(_upper_bound))
+    {
+        j["upper"] = _upper_bound;
+        j["upper_inclusive"] = _upper_inclusive;
+    }
+    if (isfinite(_lower_bound))
+    {
+        j["lower"] = _lower_bound;
+        j["lower_inclusive"] = _lower_inclusive;
+    }
+
+    return json{{"bounds", j}};
+}
+
 ConstantCurve::ConstantCurve(void): Curve(), _value(0) {}
 
 ConstantCurve::ConstantCurve(
@@ -102,6 +119,13 @@ ConstantCurve::ConstantCurve(const json &j): Curve(j)
 {
     _value = GET_DOUBLE_VALUE(j, "value");
     // _value = j.begin().value().at("value").get<double>();
+}
+
+json ConstantCurve::get_json(void)
+{
+    json j = Curve::get_json();
+    j["value"] = _value;
+    return json{{"ConstantCurve", j}};
 }
 
 double ConstantCurve::membership(double input) {return _value;}
@@ -123,6 +147,14 @@ LinearCurve::LinearCurve(const json &j): Curve(j)
     // _intercept = j.begin().value().at("intercept").get<double>();
 }
 
+json LinearCurve::get_json(void)
+{
+    json j = Curve::get_json();
+    j["slope"] = _slope;
+    j["intercept"] = _intercept;
+    return json{{"LinearCurve", j}};
+}
+
 double LinearCurve::membership(double input)
 {
     return _slope * input + _intercept;
@@ -142,6 +174,13 @@ QuadraticCurve::QuadraticCurve(const json &j): Curve(j)
     _a = GET_DOUBLE_VALUE(j, "a");
     _b = GET_DOUBLE_VALUE(j, "b");
     _c = GET_DOUBLE_VALUE(j, "c");
+}
+
+json QuadraticCurve::get_json(void)
+{
+    json j = Curve::get_json();
+    j["a"] = _a; j["b"] = _b; j["c"] = _c;
+    return json{{"QuadraticCurve", j}};
 }
 
 double QuadraticCurve::membership(double input)
@@ -166,6 +205,14 @@ LogarithmicCurve::LogarithmicCurve(const json &j): Curve(j)
     _y_offset = GET_DOUBLE_VALUE(j, "y_offset");
 }
 
+json LogarithmicCurve::get_json(void)
+{
+    json j = Curve::get_json();
+    j["base"] = _base; j["x_offset"] = _x_offset;
+    j["y_offset"] = _y_offset;
+    return json{{"LogarithmicCurve", j}};
+}
+
 double LogarithmicCurve::membership(double input)
 {
     return log(input - _x_offset) / log(_base - _x_offset) + _y_offset;
@@ -186,6 +233,14 @@ ExponentialCurve::ExponentialCurve(const json &j): Curve(j)
     _base = GET_DOUBLE_VALUE(j, "base");
     _x_offset = GET_DOUBLE_VALUE(j, "x_offset");
     _y_offset = GET_DOUBLE_VALUE(j, "y_offset");
+}
+
+json ExponentialCurve::get_json(void)
+{
+    json j = Curve::get_json();
+    j["base"] = _base; j["x_offset"] = _x_offset;
+    j["y_offset"] = _y_offset;
+    return json{{"ExponentialCurve", j}};
 }
 
 double ExponentialCurve::membership(double input)

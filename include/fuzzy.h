@@ -26,6 +26,7 @@ class FuzzySet
             std::string filename, int samples = 300,
             double center_infinite = 0, double lookahead_infinite = 10
         );
+        json get_json(void);
     private:
         void _get_curves_from_json(const json &j);
         bool _is_finite(void);

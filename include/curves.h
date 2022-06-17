@@ -27,6 +27,7 @@ public:
     bool contains(double value);
     bool is_finite(void);
 
+    virtual json get_json(void);
     virtual double membership(double input) = 0;
 };
 
@@ -42,6 +43,7 @@ class ConstantCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         ConstantCurve(const json &j);
+        json get_json(void) override;
         double membership(double input) override;
 };
 
@@ -58,6 +60,7 @@ class LinearCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         LinearCurve(const json &j);
+        json get_json(void) override;
         double membership(double input) override;
 };
 
@@ -76,6 +79,7 @@ class QuadraticCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         QuadraticCurve(const json &j);
+        json get_json(void) override;
         double membership(double input) override;
 };
 
@@ -93,6 +97,7 @@ class LogarithmicCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         LogarithmicCurve(const json &j);
+        json get_json(void) override;
         double membership(double input) override;
 };
 
@@ -110,5 +115,6 @@ class ExponentialCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         ExponentialCurve(const json &j);
+        json get_json(void) override;
         double membership(double input) override;
 };
