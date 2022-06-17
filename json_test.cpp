@@ -6,12 +6,9 @@
 
 using json = nlohmann::json;
 
-
 int main(int argc, char **argv)
 {
-
     std::ifstream infile(".\\test.json");
-
     json j_from_file = json::parse(infile);
     infile.close();
 
