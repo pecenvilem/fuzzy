@@ -12,8 +12,6 @@ using json = nlohmann::json;
 
 class FuzzySet
 {
-        friend void to_json(json &j, const FuzzySet &set);
-        friend void from_json(const json &j, FuzzySet &set);
     private:
         std::string _name = "";
         std::vector<Curve*> _curves;
