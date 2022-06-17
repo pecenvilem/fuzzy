@@ -1,23 +1,22 @@
-#include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <map>
-
+#include <cstdlib>
+#include "include\json.hpp"
 #include "include\fuzzy.h"
 
-int	main(int argc, char **argv)
+using json = nlohmann::json;
+
+int main(int argc, char **argv)
 {
-    using json = nlohmann::json;
+    std::ifstream infile(".\\test.json");
+    json j_from_file = json::parse(infile);
+    infile.close();
 
-    typedef std::map<std::string, std::string> mp;
-
-    //std::ofstream file("test.json");
-
-    LinearCurve c(0, 10, 1, 0);
-
-
-    //file.close();
-
-    system("pause");
+    FuzzySet s(j_from_file[0]);
+    json j_out = s.get_json();
+    std::cout << j_out.dump(4) << std::endl;
+    s.generate_plot_data("Cold.csv");
+    system("CALL plot\\plot.bat Cold.csv");
+    
     return 0;
 }
