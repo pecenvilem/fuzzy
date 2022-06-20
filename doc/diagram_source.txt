@@ -1,0 +1,25 @@
+[App]<>-0..n>[FuzzySet]++-1..n>[Curve]
+
+[Curve]^[ConstantCurve]
+[Curve]^[LinearCurve]
+[Curve]^[QuadraticCurve]
+[Curve]^[LogarithmicCurve]
+[Curve]^[ExponentialCurve]
+
+
+
+[App|-_run: bool;-_sets: vector(FuzzySet);-_main_menu: Menu|+loop();-_load_from_json();-_load_from_json(filename);-_create_new();-_evaluate();-_evaluate(value);-_delete();-_save();-_save(filename);-_plot();-_export_csv();-_install_plotting();-_uninstall_plotting();-_terminate()]
+
+[FuzzySet|-_name: string;-_curves: vector(Curve)|+FuzzySet(...);+FuzzySet(json);+membership(value): double;+get_name(): string;+generate_plot_data(filename);+get_json(): json;-_get_curves_from_json(json);-_is_finite(): bool;-_min_bound(): double;-_max_bound(): double;-_span(): double]
+
+[Curve|#_lower_bound: double;#_upper_bound: double;#_lower_inclusive: bool;#_upper_inclusive: bool|+Curve(...);+Curve(json);+get_lower_bound(): double;+get_upper_bound(): double;+set_lower_bound(value);+set_upper_bound(value);+contains(value): bool;+is_finite(): bool;virtual +get_json():json;virtual +membership(input_value):double;virtual +clone():Curve]
+
+[ConstantCurve|-_value:double]
+
+[LinearCurve|-_slope:double;-_intercept:double]
+
+[QuadraticCurve|-_a:double;-_b:double;-_c:double]
+
+[LogarithmicCurve|-_base:double;-_x_offset: double;-_y_offset: double]
+
+[ExponentialCurve|-_base:double;-_x_offset: double;-_y_offset: double]
