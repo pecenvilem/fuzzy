@@ -215,7 +215,7 @@ json LogarithmicCurve::get_json(void)
 
 double LogarithmicCurve::membership(double input)
 {
-    return log(input - _x_offset) / log(_base - _x_offset) + _y_offset;
+    return log(input - _x_offset) / log(_base) + _y_offset;
 }
 
 ExponentialCurve::ExponentialCurve(void):
@@ -245,5 +245,5 @@ json ExponentialCurve::get_json(void)
 
 double ExponentialCurve::membership(double input)
 {
-    return _base * (input - _x_offset) * (input - _x_offset) + _y_offset;
+    return pow(_base, (input - _x_offset)) +  _y_offset;
 }
