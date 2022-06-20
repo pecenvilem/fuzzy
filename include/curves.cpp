@@ -6,6 +6,17 @@
 
 #define GET_DOUBLE_VALUE(JSON, KEY) ((JSON.begin().value().at(KEY).get<double>()))
 
+std::vector<CurveParameters> defined_curves(void)
+{
+    return std::vector<CurveParameters>{
+        {"ConstantCurve", {"value"}},
+        {"LinearCurve", {"slope", "intercept"}},
+        {"QuadraticCurve", {"a", "b", "c"}},
+        {"ExponentialCurve", {"base", "x_offset", "y_offset"}},
+        {"LogarithmicCurve", {"base", "x_offset", "y_offset"}}
+    };
+}
+
 Curve::Curve(
     double lower_bound, double upper_bound,
     bool lower_inclusive, bool upper_unclusive

@@ -1,8 +1,17 @@
 #pragma once
 
+#include <vector>
 #include "json.hpp"
 
 using json = nlohmann::json;
+
+typedef struct curve_parameters
+{
+    std::string name;
+    std::vector<std::string> parameters;
+} CurveParameters;
+
+std::vector<CurveParameters> defined_curves(void);
 
 class Curve
 {
