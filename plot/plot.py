@@ -1,6 +1,8 @@
+from cProfile import label
 from matplotlib import pyplot as plt
 import pandas as pd
 import sys
+import os
 
 def main(cmd_args):
     try:
@@ -14,9 +16,10 @@ def main(cmd_args):
     for filename in filenames:
         try:
             data = pd.read_csv(filename, sep=";")
+            label = os.path.basename(filename).replace(".csv", "")
             plt.plot(
                 data.iloc[:, 0], data.iloc[:, 1],
-                label=filename.replace(".csv", "")
+                label=label
             )
         except FileNotFoundError as e:
             print(f"File '{filename}' not found! Skipping...")
