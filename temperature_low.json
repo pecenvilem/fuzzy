@@ -1,0 +1,111 @@
+[
+    {
+        "Freezing":
+        [
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "upper": -15
+                        },
+                        "value": 1
+                    }
+            },
+            {
+                "LinearCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": -15,
+                            "lower_inclusive": true,
+                            "upper": 10,
+                            "upper_inclusive": true
+                        },
+                        "slope": -0.04,
+                        "intercept": 0.4
+                    }
+            },
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 10
+                        },
+                        "value": 0
+                    }
+            }
+        ]
+    },
+    {
+        "Cold":
+        [
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "upper": 0,
+                            "upper_inclusive": true
+                        },
+                        "value": 1
+                    }
+            },
+            {
+                "QuadraticCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 0,
+                            "lower_inclusive": false,
+                            "upper": 3.2824,
+                            "upper_inclusive": true
+                        },
+                        "a": -0.013,
+                        "b": 0,
+                        "c": 1
+                    }
+            },
+            {
+                "LinearCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 3.2824,
+                            "lower_inclusive": false,
+                            "upper": 11.7176,
+                            "upper_inclusive": true
+                        },
+                        "slope": -0.08534,
+                        "intercept": 1.1401
+                    }
+            },
+            {
+                "QuadraticCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 11.7176,
+                            "lower_inclusive": false,
+                            "upper": 15,
+                            "upper_inclusive": true
+                        },
+                        "a": 0.013,
+                        "b": -0.39,
+                        "c": 2.925
+                    }
+            },
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 15
+                        },
+                        "value": 0
+                    }
+            }
+        ]
+    }
+]

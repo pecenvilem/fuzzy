@@ -1,0 +1,80 @@
+[
+    {
+        "Warm":
+        [
+            {
+                "ExponentialCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 5,
+                            "upper": 25,
+                            "upper_inclusive": true
+                        },
+                        "base": 1.035,
+                        "x_offset": 6.2,
+                        "y_offset": -0.915
+                    }
+            },
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 25
+                        },
+                        "value": 1
+                    }
+            }
+        ]
+    },
+    {
+        "OK":
+        [
+            {
+                "QuadraticCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 15,
+                            "upper": 30,
+                            "upper_inclusive": true
+                        },
+                        "a": -0.017778,
+                        "b": 0.8,
+                        "c": -8
+                    }
+            }
+        ]
+    },
+    {
+        "Hot":
+        [
+            {
+                "LogarithmicCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 20,
+                            "lower_inclusive": true,
+                            "upper": 32,
+                            "upper_inclusive": true
+                        },
+                        "base": 13.5,
+                        "x_offset": 19,
+                        "y_offset": 0
+                    }
+            },
+            {
+                "ConstantCurve":
+                    {
+                        "bounds":
+                        {
+                            "lower": 32
+                        },
+                        "value": 1
+                    }
+            }
+        ]
+    }
+]
