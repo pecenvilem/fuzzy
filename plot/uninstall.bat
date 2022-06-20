@@ -1,4 +1,4 @@
-echo @on
+echo @off
 
 SET install_path=%~dp0
 

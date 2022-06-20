@@ -1,4 +1,4 @@
-echo @on
+echo @off
 
 SET install_path=%~dp0venv
 
@@ -9,7 +9,8 @@ echo "Activating virtual environment..."
 call %install_path%\Scripts\activate
 
 echo "Installing packages..."
-pip install pandas matplotlib
+@REM pip install pandas matplotlib
+pip install -r %~dp0requirements.txt
 
 echo "Deactivating virtual environment..."
 call %install_path%\Scripts\deactivate
