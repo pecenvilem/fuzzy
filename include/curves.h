@@ -8,7 +8,7 @@ class Curve
 {
     /* Abstract base class representing one individual segment of
     membership funcion of Fuzzy Set */
-private:
+protected:
     double _lower_bound = 0, _upper_bound = 0;
     bool _lower_inclusive = false, _upper_inclusive = false;
 public:
@@ -18,6 +18,8 @@ public:
         bool lower_inclusive = true, bool upper_unclusive = true
     );
     Curve(const json &j);
+
+    virtual Curve *clone(void) = 0;
 
     double get_lower_bound(void) const;
     double get_upper_bound(void) const;
@@ -43,6 +45,7 @@ class ConstantCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         ConstantCurve(const json &j);
+        Curve *clone(void) override;
         json get_json(void) override;
         double membership(double input) override;
 };
@@ -60,6 +63,7 @@ class LinearCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         LinearCurve(const json &j);
+        Curve *clone(void) override;
         json get_json(void) override;
         double membership(double input) override;
 };
@@ -79,6 +83,7 @@ class QuadraticCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         QuadraticCurve(const json &j);
+        Curve *clone(void) override;
         json get_json(void) override;
         double membership(double input) override;
 };
@@ -97,6 +102,7 @@ class LogarithmicCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         LogarithmicCurve(const json &j);
+        Curve *clone(void) override;
         json get_json(void) override;
         double membership(double input) override;
 };
@@ -115,6 +121,7 @@ class ExponentialCurve: public Curve
             bool lower_inclusive = true, bool upper_unclusive = true
         );
         ExponentialCurve(const json &j);
+        Curve *clone(void) override;
         json get_json(void) override;
         double membership(double input) override;
 };

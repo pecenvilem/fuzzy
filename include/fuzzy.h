@@ -17,6 +17,7 @@ class FuzzySet
         std::vector<Curve*> _curves;
     public:
         FuzzySet(void) {};
+        FuzzySet(const FuzzySet&);
         FuzzySet(const std::string name, const std::vector<Curve*> curves);
         FuzzySet(const std::string name, const json &j_curves);
         FuzzySet(const json &j);

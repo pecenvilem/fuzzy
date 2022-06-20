@@ -121,6 +121,14 @@ ConstantCurve::ConstantCurve(const json &j): Curve(j)
     // _value = j.begin().value().at("value").get<double>();
 }
 
+Curve* ConstantCurve::clone(void)
+{
+    return new ConstantCurve(
+        _lower_bound, _upper_bound, _value,
+        _lower_inclusive, _upper_inclusive
+    );
+}
+
 json ConstantCurve::get_json(void)
 {
     json j = Curve::get_json();
@@ -145,6 +153,14 @@ LinearCurve::LinearCurve(const json &j): Curve(j)
     _intercept = GET_DOUBLE_VALUE(j, "intercept");
     // _slope = j.begin().value().at("slope").get<double>();
     // _intercept = j.begin().value().at("intercept").get<double>();
+}
+
+Curve* LinearCurve::clone(void)
+{
+    return new LinearCurve(
+        _lower_bound, _upper_bound, _slope, _intercept,
+        _lower_inclusive, _upper_inclusive
+    );
 }
 
 json LinearCurve::get_json(void)
@@ -176,6 +192,14 @@ QuadraticCurve::QuadraticCurve(const json &j): Curve(j)
     _c = GET_DOUBLE_VALUE(j, "c");
 }
 
+Curve* QuadraticCurve::clone(void)
+{
+    return new QuadraticCurve(
+        _lower_bound, _upper_bound, _a, _b, _c,
+        _lower_inclusive, _upper_inclusive
+    );
+}
+
 json QuadraticCurve::get_json(void)
 {
     json j = Curve::get_json();
@@ -203,6 +227,15 @@ LogarithmicCurve::LogarithmicCurve(const json &j): Curve(j)
     _base = GET_DOUBLE_VALUE(j, "base");
     _x_offset = GET_DOUBLE_VALUE(j, "x_offset");
     _y_offset = GET_DOUBLE_VALUE(j, "y_offset");
+}
+
+Curve* LogarithmicCurve::clone(void)
+{
+    return new LogarithmicCurve(
+        _lower_bound, _upper_bound, _base,
+        _x_offset, _y_offset,
+        _lower_inclusive, _upper_inclusive
+    );
 }
 
 json LogarithmicCurve::get_json(void)
@@ -233,6 +266,15 @@ ExponentialCurve::ExponentialCurve(const json &j): Curve(j)
     _base = GET_DOUBLE_VALUE(j, "base");
     _x_offset = GET_DOUBLE_VALUE(j, "x_offset");
     _y_offset = GET_DOUBLE_VALUE(j, "y_offset");
+}
+
+Curve* ExponentialCurve::clone(void)
+{
+    return new ExponentialCurve(
+        _lower_bound, _upper_bound, _base,
+        _x_offset, _y_offset,
+        _lower_inclusive, _upper_inclusive
+    );
 }
 
 json ExponentialCurve::get_json(void)

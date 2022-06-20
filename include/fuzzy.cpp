@@ -24,6 +24,13 @@ FuzzySet::FuzzySet(const std::string name, const json &j_curves)
     _get_curves_from_json(j_curves);
 }
 
+FuzzySet::FuzzySet(const FuzzySet& original)
+{
+    _name = original._name;
+    for (Curve *c: original._curves) _curves.push_back(c->clone());
+    
+}
+
 FuzzySet::~FuzzySet(void)
 {
     for (Curve *c : _curves) delete c;
