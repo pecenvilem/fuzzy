@@ -42,6 +42,8 @@ double FuzzySet::membership(double value)
     return 0;
 }
 
+std::string FuzzySet::get_name(void) {return _name;}
+
 void FuzzySet::generate_plot_data(
     std::string filename, int samples,
     double center_infinite, double lookahead_infinite

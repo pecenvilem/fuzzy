@@ -23,6 +23,7 @@ class FuzzySet
         FuzzySet(const json &j);
         ~FuzzySet(void);
         double membership(double value);
+        std::string get_name(void);
         void generate_plot_data(
             std::string filename, int samples = 300,
             double center_infinite = 0, double lookahead_infinite = 10
