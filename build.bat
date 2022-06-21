@@ -1,7 +1,7 @@
 echo @off
 
 @REM Enter file locations:
-SET compiler_path=C:\msys64\mingw64\bin\g++.exe
+SET compiler_path=C:\msys64\"mingw64"\bin\g++.exe
 SET main_folder_path=D:\vs\predmety\14PAM\programovani\paper
 
 @REM Assemble compiler invocation...
