@@ -103,7 +103,7 @@ bool Curve::is_finite(void)
 
 json Curve::get_json(void)
 {
-    json j;
+    json j = json::object();
     if (isfinite(_upper_bound))
     {
         j["upper"] = _upper_bound;
